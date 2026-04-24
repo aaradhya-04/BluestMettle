@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar,
-  AreaChart, Area
-} from 'recharts';
-import { Server, Activity, HardDrive, Cpu, CloudLightning, ActivitySquare } from 'lucide-react';
+
+
 import './App.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';

@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - edge-network
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_WS_URL=ws://localhost:8000/ws/dashboard
+    networks:
+      - edge-network
+    depends_on:
+      - backend
+
+  edge-node-1:
+    build:
+      context: ./edge_node
+    environment:
+      - NODE_ID=Edge-Alpha-US
+      - BACKEND_URL=http://backend:8000
+      - PYTHONUNBUFFERED=1
+    networks:
+      - edge-network
+    depends_on:
+      - backend
+
+  edge-node-2:
+    build:
+      context: ./edge_node
+    environment:
+      - NODE_ID=Edge-Beta-EU
+      - BACKEND_URL=http://backend:8000
+      - PYTHONUNBUFFERED=1
+    networks:
+      - edge-network
+    depends_on:
+      - backend
+
+  edge-node-3:
+    build:
+      context: ./edge_node
+    environment:
+      - NODE_ID=Edge-Gamma-AP
+      - BACKEND_URL=http://backend:8000
+      - PYTHONUNBUFFERED=1
+    networks:
+      - edge-network
+    depends_on:
+      - backend
+
+networks:
+  edge-network:
+    driver: bridge
